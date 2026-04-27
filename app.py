@@ -57,12 +57,12 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     # Pastikan file best15.pt ada di folder yang sama dengan app.py
-    return YOLO('best15.pt')
+    return YOLO('best157.pt')
 
 try:
     model = load_model()
 except Exception as e:
-    st.error("Model 'best15.pt' tidak ditemukan! Pastikan file model ada di folder skripsi.")
+    st.error("Model 'best157.pt' tidak ditemukan! Pastikan file model ada di folder skripsi.")
 
 # --- SIDEBAR: TIPS PENGGUNAAN & PENGATURAN ---
 with st.sidebar:
