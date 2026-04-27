@@ -4,6 +4,16 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
+# Kode untuk menyembunyikan logo GitHub, menu, dan footer
+hide_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """
+st.markdown(hide_style, unsafe_allow_html=True)
+
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Deteksi Tomat", layout="centered")
 
