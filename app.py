@@ -4,143 +4,179 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-# Kode untuk menyembunyikan logo GitHub, menu, dan footer
-hide_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-    """
-st.markdown(hide_style, unsafe_allow_html=True)
-
 # --- KONFIGURASI HALAMAN ---
-st.set_page_config(page_title="Deteksi Tomat", layout="centered")
+st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (UI MOBILE MERAH & PERBAIKAN STYLING) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA STYLE) ---
 st.markdown("""
     <style>
-    /* Mengubah background utama menjadi merah */
-    .stApp {
-        background-color: #A53A3A;
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+    
+    /* Background & Font */
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    /* Hero Section (Hitam Eksklusif) */
+    .hero-section {
+        background-color: #111111;
+        padding: 60px 40px;
+        border-radius: 0 0 40px 40px;
         color: white;
+        text-align: left;
+        margin-bottom: 40px;
     }
     
-    /* Mengubah warna teks agar terlihat jelas di background merah */
-    h1, h2, h3, p, label, .stMarkdown {
-        color: white !important;
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 50px;
+        line-height: 1.1;
+        margin-bottom: 20px;
     }
-
-    /* Styling tombol 'Mulai Deteksi' (Warna Hijau) */
-    div.stButton > button:first-child {
-        background-color: #4CAF50 !important;
-        color: white !important;
-        border-radius: 25px;
-        border: none;
-        height: 3.5em;
-        width: 100%;
-        font-weight: bold;
+    
+    .hero-subtitle {
         font-size: 18px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        opacity: 0.8;
+        max-width: 600px;
+        border-left: 3px solid #D4AF37; /* Aksen Emas */
+        padding-left: 20px;
     }
 
-    /* Input Kamera & File Uploader */
-    .stCameraInput > label, .stFileUploader > label {
+    /* Card Section (Seperti Spotlight) */
+    .spotlight-card {
+        background-color: #F9F9F9;
+        padding: 30px;
+        border-radius: 25px;
+        margin-bottom: 30px;
+        border: 1px solid #EEEEEE;
+    }
+
+    /* Tombol Utama (Elegan & Tajam) */
+    div.stButton > button:first-child {
+        background-color: #111111 !important;
         color: white !important;
+        border-radius: 5px;
+        height: 60px;
+        width: 100%;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        transition: 0.3s;
     }
     
-    /* Sidebar Styling */
-    section[data-testid="stSidebar"] {
-        background-color: #7A2E2E !important;
+    div.stButton > button:hover {
+        background-color: #D4AF37 !important; /* Berubah jadi emas saat hover */
     }
-    
-    /* Styling Tabel agar bersih */
-    .styled-table {
+
+    /* Panduan Tindakan (Horizontal Scroll Style) */
+    .guide-item {
         background-color: white;
-        color: black;
-        border-radius: 10px;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-bottom: 4px solid #111;
     }
+    
+    /* Input Camera Customization */
+    .stCameraInput { border-radius: 20px; }
+
     </style>
     """, unsafe_allow_html=True)
 
 # --- FUNGSI LOAD MODEL ---
 @st.cache_resource
 def load_model():
-    # Pastikan file best15.pt ada di folder yang sama dengan app.py
     return YOLO('best157.pt')
 
 try:
     model = load_model()
-except Exception as e:
-    st.error("Model 'best157.pt' tidak ditemukan! Pastikan file model ada di folder skripsi.")
+except:
+    st.error("Model tidak ditemukan.")
 
-# --- SIDEBAR: TIPS PENGGUNAAN & PENGATURAN ---
-with st.sidebar:
-    st.markdown("### 💡 Tips Penggunaan")
-    st.info("""
-    1. **Pencahayaan**: Pastikan objek tomat terkena cahaya terang.
-    2. **Jarak**: Jangan terlalu dekat atau terlalu jauh.
-    3. **Sensitivitas**: Jika tomat tidak terdeteksi, turunkan 'Confidence' di bawah.
-    """)
+# --- HERO SECTION (SPOTLIGHT) ---
+st.markdown("""
+    <div class="hero-section">
+        <p style="letter-spacing: 3px; color: #D4AF37; margin-bottom: 10px;">PROYEK SKRIPSI</p>
+        <h1 class="hero-title">Karakteristik<br>Kualitas Tomat</h1>
+        <p class="hero-subtitle">
+            Temukan standar kualitas terbaik melalui teknologi AI. Identifikasi kerusakan secara akurat untuk manajemen stok yang lebih efisien di Toko Iwan.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- AREA UTAMA ---
+col_input, col_tips = st.columns([2, 1])
+
+with col_input:
+    st.markdown("### Ambil Citra Tomat")
+    metode = st.segmented_control("Metode", ["Kamera Langsung", "Galeri File"], default="Kamera Langsung")
     
-    st.markdown("---")
-    st.header("⚙️ Pengaturan Model")
-    conf_val = st.slider("Confidence (Sensitivitas)", 0.05, 1.0, 0.25, help="Semakin rendah semakin sensitif.")
-    iou_val = st.slider("IoU (Pembersih Kotak)", 0.1, 1.0, 0.45, help="Mengatur tumpang tindih kotak deteksi.")
+    foto = None
+    if metode == "Kamera Langsung":
+        foto = st.camera_input("Scanner")
+    else:
+        foto = st.file_uploader("Pilih Berkas", type=["jpg", "png", "jpeg"])
 
-# --- TAMPILAN UTAMA ---
-st.markdown("<h2 style='text-align: center; font-weight: bold;'>Klasifikasi Kerusakan Buah Tomat</h2>", unsafe_allow_html=True)
+with col_tips:
+    st.markdown("""
+        <div class="spotlight-card">
+            <h4 style="margin-top:0;">Tips Spotlight</h4>
+            <p style="font-size: 14px; color: #666;">
+                Pastikan objek berada di tengah bingkai dengan pencahayaan yang cukup. AI akan menganalisis tekstur kulit untuk menentukan klasifikasi.
+            </p>
+            <hr>
+            <p style="font-size: 12px; font-style: italic;">Standar Akurasi: YOLOv8m (94%) [cite: 26, 257, 262]</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-# Pilihan input gambar (seperti tombol di UI)
-pilihan = st.radio("Pilih Sumber Gambar:", ("Ambil Foto (Kamera)", "Upload dari Galeri"), horizontal=True)
-
-foto = None
-if pilihan == "Ambil Foto (Kamera)":
-    foto = st.camera_input("Ambil foto tomat secara langsung")
-else:
-    foto = st.file_uploader("Pilih foto dari galeri...", type=["jpg", "png", "jpeg"])
-
-st.markdown("---")
-
-# PROSES DETEKSI
+# --- PROSES DETEKSI ---
 if foto is not None:
-    # Tombol Mulai (Warna Hijau sesuai gambar UI)
-    if st.button("🚀 Mulai Deteksi"):
-        with st.spinner('Sedang menganalisis kualitas tomat...'):
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("MULAI ANALISIS CITRA"):
+        with st.spinner('Menganalisis karakteristik objek...'):
             gambar = Image.open(foto)
             img_array = np.array(gambar)
+            results = model.predict(source=img_array, conf=0.25, iou=0.45)
             
-            # Jalankan YOLOv8
-            results = model.predict(source=img_array, conf=conf_val, iou=iou_val)
+            st.markdown("---")
             
-            # Layout Hasil (Default vs Hasil)
-            col_def, col_res = st.columns(2)
-            
-            with col_def:
-                st.markdown("<p style='text-align: center; font-weight: bold;'>Default (Asli)</p>", unsafe_allow_html=True)
-                st.image(gambar, use_container_width=True)
-            
-            with col_res:
-                st.markdown("<p style='text-align: center; font-weight: bold;'>Hasil Deteksi</p>", unsafe_allow_html=True)
+            # Display Results
+            col_res1, col_res2 = st.columns(2)
+            with col_res1:
+                st.image(gambar, caption="Citra Default", use_container_width=True)
+            with col_res2:
                 res_plotted = results[0].plot()
-                st.image(res_plotted, use_container_width=True)
+                st.image(res_plotted, caption="Visualisasi AI", use_container_width=True)
 
-            # --- STATISTIK HASIL ---
-            st.markdown("### 📊 Ringkasan Deteksi")
+            # --- STATISTIK ---
             counts = results[0].boxes.cls.tolist()
-            names = results[0].names
-            
             if len(counts) > 0:
-                df_counts = pd.DataFrame(counts, columns=['class_id'])
-                df_counts['Kondisi Tomat'] = df_counts['class_id'].apply(lambda x: names[int(x)])
-                rekap = df_counts['Kondisi Tomat'].value_counts().reset_index()
-                rekap.columns = ['Kondisi', 'Jumlah']
-                
-                # Tampilkan Tabel dan Metrik Total
-                c1, c2 = st.columns([2, 1])
-                with c1:
-                    st.dataframe(rekap, use_container_width=True)
-                with c2:
-                    st.metric("Total Buah", len(counts))
+                st.markdown(f"#### Hasil: {len(counts)} Objek Teridentifikasi")
             else:
-                st.warning("Tomat tidak terdeteksi. Silakan coba foto kembali dengan sudut yang berbeda.")
+                st.warning("Objek tidak ditemukan.")
+
+# --- PANDUAN (WONDERFUL STYLE) ---
+st.markdown("### Panduan Klasifikasi")
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.markdown("""<div class="guide-item" style="border-color: #2E8B57;">
+        <b style="color: #2E8B57;">SEHAT</b><br>
+        <small>Pajang di etalase utama. Kualitas ekspor.</small>
+    </div>""", unsafe_allow_html=True)
+
+with c2:
+    st.markdown("""<div class="guide-item" style="border-color: #FFA500;">
+        <b style="color: #FFA500;">RUSAK SEDANG</b><br>
+        <small>Segera distribusikan atau jadikan bahan olahan.</small>
+    </div>""", unsafe_allow_html=True)
+
+with c3:
+    st.markdown("""<div class="guide-item" style="border-color: #B22222;">
+        <b style="color: #B22222;">RUSAK BERAT</b><br>
+        <small>Pisahkan segera. Potensi penularan bakteri tinggi.</small>
+    </div>""", unsafe_allow_html=True)
+
+st.markdown("<br><p style='text-align: center; color: #CCC; font-size: 11px; letter-spacing: 2px;'>WONDERFUL TOMATO • SKRIPSI 2026</p>", unsafe_allow_html=True)
