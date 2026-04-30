@@ -36,7 +36,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* Tips Spotlight */
+    /* Tips Pengambilan poto */
     .spotlight-text {
         font-size: 22px;
         color: #D4AF37; /* Warna Emas */
@@ -99,9 +99,9 @@ except:
 st.markdown("""
     <div class="hero-section">
         <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN</p>
-        <h1 class="hero-title">Karakteristik<br>Kualitas Tomat</h1>
+        <h1 class="hero-title">Periksa<br>Kerusakan Tomat</h1>
         <div class="spotlight-text">
-            TIPS SPOTLIGHT: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
+            TIPS PENGAMBILAN POTO: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
             AI akan mendeteksi tekstur kulit untuk menentukan kondisi tomat secara otomatis.
         </div>
     </div>
@@ -109,13 +109,15 @@ st.markdown("""
 
 # --- AREA INPUT ---
 st.markdown("### 📸 Ambil Citra Tomat")
-metode = st.radio("Pilih Cara:", ("Kamera Langsung", "Galeri Foto HP"), horizontal=True)
+
+# Opsi ditukar: Galeri Foto HP menjadi urutan pertama dan default terpilih
+metode = st.radio("Pilih Cara:", ("Galeri Foto HP", "Kamera Langsung"), horizontal=True)
 
 foto = None
-if metode == "Kamera Langsung":
-    foto = st.camera_input("Scanner AI")
-else:
+if metode == "Galeri Foto HP":
     foto = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
+else:
+    foto = st.camera_input("Scanner AI")
 
 # --- PROSES DETEKSI ---
 if foto is not None:
@@ -159,7 +161,7 @@ if foto is not None:
                 # Tampilan Header Ringkasan
                 st.markdown(f"<div style='text-align:center; padding:15px; background:#111; color:#D4AF37; border-radius:15px; font-size:28px; font-weight:bold; margin-bottom:20px;'>TOTAL TERPERIKSA: {len(counts)} BUAH</div>", unsafe_allow_html=True)
                 
-                # Hanya menampilkan tabel formal sesuai permintaan
+                # Menampilkan tabel rincian data[cite: 1, 2]
                 st.table(rekap) 
             else:
                 st.warning("Tomat tidak terbaca jelas. Mohon dekati objek dan pastikan cahaya cukup.")
