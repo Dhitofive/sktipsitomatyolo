@@ -36,7 +36,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* Tips Spotlight menggantikan subtitle lama */
+    /* Tips Spotlight */
     .spotlight-text {
         font-size: 22px;
         color: #D4AF37; /* Warna Emas */
@@ -74,6 +74,12 @@ st.markdown("""
     /* Input Styling */
     .stCameraInput { border-radius: 20px; }
     label { font-size: 24px !important; font-weight: bold !important; }
+
+    /* Tabel Styling agar kontras */
+    .stTable {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
 
     </style>
     """, unsafe_allow_html=True)
@@ -114,8 +120,8 @@ else:
 # --- PROSES DETEKSI ---
 if foto is not None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("MULAI ANALISIS SEKARANG"):
-        # Parameter deteksi dikunci untuk stabilitas hasil pada dataset terbatas
+    if st.button("MULAI PERIKSA"):
+        # Parameter deteksi dikunci untuk stabilitas hasil pada dataset terbatas[cite: 2]
         CONF_LIMIT = 0.25 
         IOU_LIMIT = 0.45
 
@@ -123,7 +129,7 @@ if foto is not None:
             gambar = Image.open(foto)
             img_array = np.array(gambar)
             
-            # Melakukan prediksi menggunakan model YOLOv8
+            # Melakukan prediksi menggunakan model YOLOv8[cite: 1, 2]
             results = model.predict(source=img_array, conf=CONF_LIMIT, iou=IOU_LIMIT)
             
             st.markdown("---")
@@ -133,57 +139,51 @@ if foto is not None:
             with col_res1:
                 st.image(gambar, caption="Foto Asli", use_container_width=True)
             with col_res2:
-                res_plotted = results[0].plot() # Visualisasi bounding box
+                res_plotted = results[0].plot() 
                 st.image(res_plotted, caption="Hasil Identifikasi AI", use_container_width=True)
 
-            # --- BAGIAN STATISTIK RINCI ---
+            # --- BAGIAN STATISTIK (HANYA TABEL) ---
             st.markdown("---")
-            st.markdown("### 📊 Rincian Kondisi Stok")
+            st.markdown("### Rincian Kerusakan")
             
             counts = results[0].boxes.cls.tolist()
             names = results[0].names 
             
             if len(counts) > 0:
-                # Mengolah data rincian
+                # Mengolah data rincian[cite: 1, 2]
                 df_counts = pd.DataFrame(counts, columns=['class_id'])
                 df_counts['Kondisi'] = df_counts['class_id'].apply(lambda x: names[int(x)])
                 rekap = df_counts['Kondisi'].value_counts().reset_index()
                 rekap.columns = ['Kategori Kerusakan', 'Jumlah (Butir)']
                 
-                # Tampilan Total Keseluruhan
+                # Tampilan Header Ringkasan
                 st.markdown(f"<div style='text-align:center; padding:15px; background:#111; color:#D4AF37; border-radius:15px; font-size:28px; font-weight:bold; margin-bottom:20px;'>TOTAL TERPERIKSA: {len(counts)} BUAH</div>", unsafe_allow_html=True)
                 
-                # Baris Metrik (Angka Besar) agar mudah dilihat orang tua
-                met_cols = st.columns(len(rekap))
-                for idx, row in rekap.iterrows():
-                    with met_cols[idx]:
-                        st.metric(label=row['Kategori Kerusakan'], value=f"{row['Jumlah (Butir)']} Butir")
-                
-                # Tabel Formal
+                # Hanya menampilkan tabel formal sesuai permintaan
                 st.table(rekap) 
             else:
                 st.warning("Tomat tidak terbaca jelas. Mohon dekati objek dan pastikan cahaya cukup.")
 
 # --- PANDUAN TINDAKAN (TAMPIL PERMANEN) ---
 st.markdown("---")
-st.markdown("### 📋 Panduan Klasifikasi")
+st.markdown("### Saran Tindakan")
 c1, c2, c3 = st.columns(3)
 
 with c1:
     st.markdown("""<div class="guide-item" style="border-color: #2E8B57;">
-        <b style="color: #2E8B57; font-size: 26px;">✓ SEHAT</b><br>
+        <b style="color: #2E8B57; font-size: 26px;">TIDAK RUSAK</b><br>
         <span style="font-size: 18px;">Kondisi Bagus. Masukkan ke rak pajangan utama.</span>
     </div>""", unsafe_allow_html=True)
 
 with c2:
     st.markdown("""<div class="guide-item" style="border-color: #FFA500;">
-        <b style="color: #FFA500; font-size: 26px;">⚠️ SEDANG</b><br>
+        <b style="color: #FFA500; font-size: 26px;">KERUSAKAN SEDANG</b><br>
         <span style="font-size: 18px;">Ada sedikit cacat. Segera jual atau olah hari ini.</span>
     </div>""", unsafe_allow_html=True)
 
 with c3:
     st.markdown("""<div class="guide-item" style="border-color: #B22222;">
-        <b style="color: #B22222; font-size: 26px;">❌ BERAT</b><br>
+        <b style="color: #B22222; font-size: 26px;">KERUSAKAN BERAT</b><br>
         <span style="font-size: 18px;">Rusak Parah. Pisahkan segera agar tidak menular.</span>
     </div>""", unsafe_allow_html=True)
 
