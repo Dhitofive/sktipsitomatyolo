@@ -88,7 +88,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     # Memuat model YOLOv8 yang telah dilatih
-    return YOLO('best99.pt')
+    return YOLO('best1.pt')
 
 try:
     model = load_model()
@@ -101,14 +101,14 @@ st.markdown("""
         <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN</p>
         <h1 class="hero-title">Periksa<br>Kerusakan Tomat</h1>
         <div class="spotlight-text">
-            TIPS PENGAMBILAN POTO: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
+            TIPS PENGAMBILAN FOTO: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
             AI akan mendeteksi tekstur kulit untuk menentukan kondisi tomat secara otomatis.
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 # --- AREA INPUT ---
-st.markdown("### 📸 Ambil Citra Tomat")
+st.markdown("### Ambil FotoTomat")
 
 # Opsi ditukar: Galeri Foto HP menjadi urutan pertama dan default terpilih
 metode = st.radio("Pilih Cara:", ("Galeri Foto HP", "Kamera Langsung"), horizontal=True)
