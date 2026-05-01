@@ -7,7 +7,7 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
+# --- CUSTOM CSS (Skripsi) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -189,4 +189,4 @@ with c3:
         <span style="font-size: 18px;">Rusak Parah. Pisahkan segera agar tidak menular.</span>
     </div>""", unsafe_allow_html=True)
 
-st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>WONDERFUL INDONESIA STYLE • SKRIPSI 2026</p>", unsafe_allow_html=True)
+st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>SKRIPSI 2026</p>", unsafe_allow_html=True)
