@@ -88,7 +88,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     # Memuat model YOLOv8 yang telah dilatih
-    return YOLO('best2.pt')
+    return YOLO('best.pt')
 
 try:
     model = load_model()
@@ -98,7 +98,7 @@ except:
 # --- HERO SECTION (SPOTLIGHT) ---
 st.markdown("""
     <div class="hero-section">
-        <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN5</p>
+        <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN</p>
         <h1 class="hero-title">Periksa<br>Kerusakan Tomat</h1>
         <div class="spotlight-text">
             TIPS PENGAMBILAN FOTO: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
