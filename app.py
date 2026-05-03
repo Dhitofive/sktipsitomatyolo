@@ -88,7 +88,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     # Memuat model YOLOv8 yang telah dilatih
-    return YOLO('best.pt')
+    return YOLO('best22.pt')
 
 try:
     model = load_model()
