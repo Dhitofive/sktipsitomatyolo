@@ -124,7 +124,7 @@ if foto is not None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("MULAI PERIKSA"):
         # Parameter deteksi dikunci untuk stabilitas hasil pada dataset terbatas[cite: 2]
-        CONF_LIMIT = 0.25 
+        CONF_LIMIT = 0.64 
         IOU_LIMIT = 0.45
 
         with st.spinner('Sedang menganalisis citra...'):
@@ -141,7 +141,7 @@ if foto is not None:
             with col_res1:
                 st.image(gambar, caption="Foto Asli", use_container_width=True)
             with col_res2:
-                res_plotted = results[0].plot() 
+                res_plotted = results[0].plot(conf=False)
                 st.image(res_plotted, caption="Hasil Identifikasi AI", use_container_width=True)
 
             # --- BAGIAN STATISTIK (HANYA TABEL) ---
@@ -189,4 +189,4 @@ with c3:
         <span style="font-size: 18px;">Rusak Parah. Pisahkan segera agar tidak semakin menular.</span>
     </div>""", unsafe_allow_html=True)
 
-st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>WONDERFUL INDONESIA STYLE • SKRIPSI 2026</p>", unsafe_allow_html=True)
+st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>SKRIPSI 2026</p>", unsafe_allow_html=True)
