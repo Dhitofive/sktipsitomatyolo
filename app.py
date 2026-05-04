@@ -180,13 +180,13 @@ with c1:
 with c2:
     st.markdown("""<div class="guide-item" style="border-color: #FFA500;">
         <b style="color: #FFA500; font-size: 26px;">KERUSAKAN SEDANG</b><br>
-        <span style="font-size: 18px;">Ada sedikit cacat. Segera jual atau olah hari ini.</span>
+        <span style="font-size: 18px;">agar tidak menular, segera di pisahkan jika kerusakan sudah semakin parah.</span>
     </div>""", unsafe_allow_html=True)
 
 with c3:
     st.markdown("""<div class="guide-item" style="border-color: #B22222;">
         <b style="color: #B22222; font-size: 26px;">KERUSAKAN BERAT</b><br>
-        <span style="font-size: 18px;">Rusak Parah. Pisahkan segera agar tidak menular.</span>
+        <span style="font-size: 18px;">Rusak Parah. Pisahkan segera agar tidak semakin menular.</span>
     </div>""", unsafe_allow_html=True)
 
 st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>WONDERFUL INDONESIA STYLE • SKRIPSI 2026</p>", unsafe_allow_html=True)
