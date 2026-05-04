@@ -101,8 +101,8 @@ st.markdown("""
         <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN</p>
         <h1 class="hero-title">Periksa<br>Kerusakan Tomat</h1>
         <div class="spotlight-text">
-            TIPS PENGAMBILAN FOTO: Pastikan buah tomat berada di tengah kamera dengan cahaya yang terang. 
-            AI akan mendeteksi tekstur kulit untuk menentukan kondisi tomat secara otomatis.
+            TIPS PENGAMBILAN FOTO: Foto buah tomat dari atas, pastikan buah tomat berada di cahaya yang cukup terang. 
+            pastikan buah tomat dapat terfoto semua dari atas.
         </div>
     </div>
     """, unsafe_allow_html=True)
