@@ -124,7 +124,7 @@ if foto is not None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("MULAI PERIKSA"):
         # Parameter deteksi dikunci untuk stabilitas hasil pada dataset terbatas[cite: 2]
-        CONF_LIMIT = 0.50 
+        CONF_LIMIT = 0.25
         IOU_LIMIT = 0.45
 
         with st.spinner('Sedang menganalisis citra...'):
