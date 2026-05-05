@@ -125,7 +125,7 @@ if foto is not None:
     if st.button("MULAI PERIKSA"):
         # Parameter deteksi dikunci untuk stabilitas hasil pada dataset terbatas[cite: 2]
         CONF_LIMIT = 0.25
-        IOU_LIMIT = 0.45
+        IOU_LIMIT = 0.64
 
         with st.spinner('Sedang menganalisis citra...'):
             gambar = Image.open(foto)
