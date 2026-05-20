@@ -150,6 +150,13 @@ if foto is not None:
             with col_res2:
                 res_plotted = results[0].plot(conf=False)
                 st.image(res_plotted, caption="Hasil Identifikasi AI", use_container_width=True)
+                
+                # --- DISKLAIMER BATASAN MASALAH ---
+                st.markdown("""
+                    <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
+                        *Disclaimer: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
+                    </p>
+                """, unsafe_allow_html=True)
 
             # --- BAGIAN STATISTIK ---
             st.markdown("---")
