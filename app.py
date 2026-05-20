@@ -154,7 +154,7 @@ if foto is not None:
                 # --- DISKLAIMER BATASAN MASALAH ---
                 st.markdown("""
                     <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
-                        *Disclaimer: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
+                        *Catatan: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
                     </p>
                 """, unsafe_allow_html=True)
 
