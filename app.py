@@ -7,7 +7,7 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA & KAMERA FULL SCREEN HP) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -66,50 +66,8 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
+    .stCameraInput { border-radius: 20px; }
     label { font-size: 20px !important; font-weight: bold !important; }
-
-    /* ========================================================
-       FORCING STREAMLIT CAMERA TO GO FULL WIDTH (100% HP SCREEN)
-       ======================================================== */
-    
-    /* 1. Dobrak pembungkus terluar widget kamera */
-    div[data-testid="stCameraInput"] {
-        width: 100vw !important;
-        max-width: 100% !important;
-        margin-left: 0px !important;
-        margin-right: 0px !important;
-        padding: 0px !important;
-    }
-
-    /* 2. Bongkar flexbox internal Streamlit yang mengunci ukuran kamera */
-    div[data-testid="stCameraInput"] > div,
-    div[data-testid="stCameraInput"] > div > div,
-    div[data-testid="stCameraInput"] > div > div > div {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 100% !important;
-        background-color: transparent !important;
-    }
-
-    /* 3. Paksa elemen video live preview agar tegak, besar, dan full screen */
-    div[data-testid="stCameraInput"] video {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        aspect-ratio: 4 / 3 !important; /* Rasio kamera HP bawaan */
-        object-fit: cover !important;   /* Mengisi penuh ruang tanpa menyusut */
-        border-radius: 15px 15px 0 0 !important;
-    }
-
-    /* 4. Sesuaikan ukuran tombol jepret di bawahnya agar ikut melebar penuh */
-    div[data-testid="stCameraInput"] button {
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 0 15px 15px !important;
-        padding: 18px !important;
-        font-size: 20px !important;
-        font-weight: bold !important;
-    }
 
     </style>
     """, unsafe_allow_html=True)
