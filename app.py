@@ -7,7 +7,7 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & LARGE CAMERA) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -66,7 +66,18 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    .stCameraInput { border-radius: 20px; }
+    /* === MODIFIKASI UKURAN KAMERA AGAR LEBIH BESAR === */
+    [data-testid="stCameraInput"] {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    [data-testid="stCameraInput"] video {
+        border-radius: 20px;
+        width: 100% !important;
+        max-height: 70vh !important; /* Membatasi tinggi agar tidak terlalu memanjang ke bawah */
+        object-fit: cover !important; /* Memastikan gambar memenuhi kotak tanpa distorsi */
+    }
+    
     label { font-size: 20px !important; font-weight: bold !important; }
 
     </style>
@@ -129,7 +140,9 @@ foto = None
 if metode == "Galeri Foto HP":
     foto = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
 else:
-    foto = st.camera_input("Scanner AI")
+    # Membungkus kamera dalam container agar CSS bekerja maksimal
+    with st.container():
+        foto = st.camera_input("Scanner AI")
 
 # --- PROSES DETEKSI ---
 if foto is not None:
