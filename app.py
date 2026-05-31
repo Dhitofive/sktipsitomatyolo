@@ -7,14 +7,10 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- PARAMETER DETEKSI (DITETAPKAN LANGSUNG / DISEMBUNYIKAN DARI USER) ---
-CONF_LIMIT = 0.35  # Tingkat Keyakinan Default
-IOU_LIMIT = 0.45   # Ambang Batas Tumpang Tindih Default
-
 # --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700&family=Inter:wght=400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
@@ -76,6 +72,33 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# --- SIDEBAR (PENGATURAN TEKNIS) ---
+with st.sidebar:
+    st.header("⚙️ Pengaturan Sensor")
+    st.write("Sesuaikan sensitivitas deteksi AI di bawah ini:")
+    
+    # Slider untuk Confidence Limit
+    conf_limit = st.slider(
+        "Tingkat Keyakinan (Confidence)", 
+        min_value=0.0, 
+        max_value=1.0, 
+        value=0.35, 
+        step=0.05,
+        help="Semakin tinggi, AI semakin selektif (hanya mendeteksi yang sangat yakin)."
+    )
+    
+    # Slider untuk IOU Limit
+    iou_limit = st.slider(
+        "Ambang Batas Tumpang Tindih (IOU)", 
+        min_value=0.0, 
+        max_value=1.0, 
+        value=0.45, 
+        step=0.05,
+        help="Mengatur deteksi kotak yang bertumpukan."
+    )
+    
+    st.info("Saran: Gunakan nilai default jika tidak yakin.")
+
 # --- FUNGSI LOAD MODEL ---
 @st.cache_resource
 def load_model():
@@ -116,8 +139,8 @@ if foto is not None:
             gambar = Image.open(foto)
             img_array = np.array(gambar)
             
-            # Prediksi langsung menggunakan variabel konstan tanpa input user
-            results = model.predict(source=img_array, conf=CONF_LIMIT, iou=IOU_LIMIT)
+            # Prediksi menggunakan parameter dari sidebar
+            results = model.predict(source=img_array, conf=conf_limit, iou=iou_limit)
             
             st.markdown("---")
             
@@ -151,7 +174,7 @@ if foto is not None:
                 st.markdown(f"<div style='text-align:center; padding:15px; background:#111; color:#D4AF37; border-radius:15px; font-size:28px; font-weight:bold; margin-bottom:20px;'>TOTAL TERPERIKSA: {len(counts)} BUAH</div>", unsafe_allow_html=True)
                 st.table(rekap) 
             else:
-                st.warning("Tomat tidak terbaca. Perbaiki posisi pengambilan gambar atau perhatikan pencahayaan sekitar objek.")
+                st.warning("Tomat tidak terbaca. Coba turunkan 'Tingkat Keyakinan' di menu samping atau perbaiki pencahayaan.")
 
 # --- PANDUAN TINDAKAN ---
 st.markdown("---")
