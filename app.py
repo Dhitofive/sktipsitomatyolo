@@ -7,7 +7,7 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & 4:3 CAMERA) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & DIALOG CAMERA) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -66,7 +66,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* === REVISI TAMPILAN KAMERA MENJADI RASIO KAWAAN HP (4:3) === */
+    /* === REVISI TAMPILAN KAMERA DI DALAM DIALOG DI TENGAH LAYAR === */
     [data-testid="stCameraInput"] {
         max-width: 100% !important;
         width: 100% !important;
@@ -78,9 +78,9 @@ st.markdown("""
     [data-testid="stCameraInput"] video {
         border-radius: 20px;
         width: 100% !important;
-        max-width: 640px;            /* Batas lebar ideal rasio 4:3 */
+        max-width: 580px;            /* Ukuran seimbang untuk jendela pop-up */
         aspect-ratio: 4 / 3 !important; /* Paksa ke rasio sensor bawaan kamera HP */
-        object-fit: cover !important;   /* Tomat tetap bulat proporsional, tidak penyok */
+        object-fit: cover !important;   
     }
 
     label { font-size: 20px !important; font-weight: bold !important; }
@@ -93,17 +93,15 @@ with st.sidebar:
     st.header("⚙️ Pengaturan Sensor")
     st.write("Sesuaikan sensitivitas deteksi AI di bawah ini:")
     
-    # Slider untuk Confidence Limit
     conf_limit = st.slider(
         "Tingkat Keyakinan (Confidence)", 
         min_value=0.0, 
         max_value=1.0, 
         value=0.35, 
         step=0.05,
-        help="Semakin tinggi, AI semakin selektif (hanya mendeteksi yang sangat yakin)."
+        help="Semakin tinggi, AI semakin selektif."
     )
     
-    # Slider untuk IOU Limit
     iou_limit = st.slider(
         "Ambang Batas Tumpang Tindih (IOU)", 
         min_value=0.0, 
@@ -141,13 +139,29 @@ st.markdown("""
 st.markdown("### Ambil Foto Tomat")
 metode = st.radio("Pilih Cara:", ("Galeri Foto HP", "Kamera Langsung"), horizontal=True)
 
-foto = None
+# Menggunakan session_state agar foto tersimpan saat jendela dialog ditutup
+if "foto_terekam" not in st.session_state:
+    st.session_state.foto_terekam = None
+
+# LANGKAH FITUR HALAMAN KHUSUS KAMERA (POP-UP)
+@st.dialog("Kamera Scanner AI", width="large")
+def buka_halaman_kamera():
+    st.write("Posisikan kamera tepat di atas buah tomat, lalu tekan tombol ambil gambar di bawah.")
+    kamera_file = st.camera_input("Arahkan Sensor")
+    if kamera_file is not None:
+        st.session_state.foto_terekam = kamera_file
+        st.rerun() # Otomatis menutup dialog dan kembali ke halaman utama membawa foto
+
+# Logika pemilihan input
 if metode == "Galeri Foto HP":
-    foto = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
+    st.session_state.foto_terekam = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
 else:
-    # Membungkus widget kamera agar modifikasi CSS bekerja dengan rapi
-    with st.container():
-        foto = st.camera_input("Scanner AI")
+    st.write("Klik tombol di bawah ini untuk membuka layar penembak citra otomatis.")
+    if st.button("📷 BUKA LAYAR SCANNER KAMERA"):
+        buka_halaman_kamera()
+
+# Ambil objek gambar dari session state
+foto = st.session_state.foto_terekam
 
 # --- PROSES DETEKSI ---
 if foto is not None:
@@ -157,7 +171,6 @@ if foto is not None:
             gambar = Image.open(foto)
             img_array = np.array(gambar)
             
-            # Prediksi menggunakan parameter dari sidebar
             results = model.predict(source=img_array, conf=conf_limit, iou=iou_limit)
             
             st.markdown("---")
@@ -169,7 +182,6 @@ if foto is not None:
                 res_plotted = results[0].plot(conf=False)
                 st.image(res_plotted, caption="Hasil Identifikasi AI", use_container_width=True)
                 
-                # --- DISKLAIMER BATASAN MASALAH ---
                 st.markdown("""
                     <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
                         *Catatan: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
