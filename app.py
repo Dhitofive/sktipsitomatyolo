@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-# --- KONFIGURASI HALAMAN ---
+y
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
 # --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & LARGE CAMERA) ---
@@ -66,16 +66,19 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* === MODIFIKASI UKURAN KAMERA AGAR LEBIH BESAR === */
+/* === MODIFIKASI UKURAN KAMERA RASIO 4:3 === */
     [data-testid="stCameraInput"] {
         max-width: 100% !important;
         width: 100% !important;
+        display: flex;
+        justify-content: center;
     }
     [data-testid="stCameraInput"] video {
         border-radius: 20px;
         width: 100% !important;
-        max-height: 70vh !important; /* Membatasi tinggi agar tidak terlalu memanjang ke bawah */
-        object-fit: cover !important; /* Memastikan gambar memenuhi kotak tanpa distorsi */
+        max-width: 640px; /* Menyesuaikan lebar ideal untuk rasio 4:3 */
+        aspect-ratio: 4 / 3 !important; /* Memaksa kamera ke rasio standar 4:3 */
+        object-fit: cover !important; /* Menjaga objek tetap proporsional tanpa ketarik */
     }
     
     label { font-size: 20px !important; font-weight: bold !important; }
