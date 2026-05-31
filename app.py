@@ -7,7 +7,7 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & 4:3 CAMERA) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -66,7 +66,23 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    .stCameraInput { border-radius: 20px; }
+    /* === REVISI TAMPILAN KAMERA MENJADI RASIO KAWAAN HP (4:3) === */
+    [data-testid="stCameraInput"] {
+        max-width: 100% !important;
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    [data-testid="stCameraInput"] video {
+        border-radius: 20px;
+        width: 100% !important;
+        max-width: 640px;            /* Batas lebar ideal rasio 4:3 */
+        aspect-ratio: 4 / 3 !important; /* Paksa ke rasio sensor bawaan kamera HP */
+        object-fit: cover !important;   /* Tomat tetap bulat proporsional, tidak penyok */
+    }
+
     label { font-size: 20px !important; font-weight: bold !important; }
 
     </style>
@@ -129,7 +145,9 @@ foto = None
 if metode == "Galeri Foto HP":
     foto = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
 else:
-    foto = st.camera_input("Scanner AI")
+    # Membungkus widget kamera agar modifikasi CSS bekerja dengan rapi
+    with st.container():
+        foto = st.camera_input("Scanner AI")
 
 # --- PROSES DETEKSI ---
 if foto is not None:
