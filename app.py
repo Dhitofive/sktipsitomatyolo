@@ -4,10 +4,10 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-y
+# --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & LARGE CAMERA) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
@@ -66,21 +66,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-/* === MODIFIKASI UKURAN KAMERA RASIO 4:3 === */
-    [data-testid="stCameraInput"] {
-        max-width: 100% !important;
-        width: 100% !important;
-        display: flex;
-        justify-content: center;
-    }
-    [data-testid="stCameraInput"] video {
-        border-radius: 20px;
-        width: 100% !important;
-        max-width: 640px; /* Menyesuaikan lebar ideal untuk rasio 4:3 */
-        aspect-ratio: 4 / 3 !important; /* Memaksa kamera ke rasio standar 4:3 */
-        object-fit: cover !important; /* Menjaga objek tetap proporsional tanpa ketarik */
-    }
-    
+    .stCameraInput { border-radius: 20px; }
     label { font-size: 20px !important; font-weight: bold !important; }
 
     </style>
@@ -143,9 +129,7 @@ foto = None
 if metode == "Galeri Foto HP":
     foto = st.file_uploader("Pilih Berkas Gambar", type=["jpg", "png", "jpeg"])
 else:
-    # Membungkus kamera dalam container agar CSS bekerja maksimal
-    with st.container():
-        foto = st.camera_input("Scanner AI")
+    foto = st.camera_input("Scanner AI")
 
 # --- PROSES DETEKSI ---
 if foto is not None:
