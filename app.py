@@ -7,10 +7,10 @@ import pandas as pd
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
+# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY & FULL SCREEN HP CAMERA) ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700&family=Inter:wght@400;600&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
@@ -66,7 +66,42 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    .stCameraInput { border-radius: 20px; }
+    /* ========================================================
+       PERBAIKAN TOTAL LAYAR KAMERA STREAMLIT BIAR PENUH (4:3)
+       ======================================================== */
+    
+    /* 1. Paksa container utama kamera agar melebar penuh di HP */
+    [data-testid="stCameraInput"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    /* 2. Bongkar pembungkus internal Streamlit yang memotong gambar */
+    [data-testid="stCameraInput"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        background-color: transparent !important;
+    }
+
+    /* 3. Paksa elemen video (live preview) menjadi besar dan proporsional */
+    [data-testid="stCameraInput"] video {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 4 / 3 !important; /* Standar kamera HP */
+        object-fit: cover !important;   /* Memenuhi seluruh area tanpa gepeng */
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    /* 4. Perbaiki tombol "Take Photo" bawaan agar pas di bawah video */
+    [data-testid="stCameraInput"] button {
+        border-radius: 0 0 20px 20px !important;
+        font-size: 18px !important;
+        padding: 15px !important;
+    }
+
     label { font-size: 20px !important; font-weight: bold !important; }
 
     </style>
