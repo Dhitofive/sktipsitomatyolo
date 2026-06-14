@@ -131,7 +131,7 @@ if foto is not None:
                 # catatan
                 st.markdown("""
                     <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
-                        *Catatan: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
+                        *Catatan: sistem hanya memprediksi tomat yang tertangkap oleh kamera
                     </p>
                 """, unsafe_allow_html=True)
 
@@ -151,7 +151,7 @@ if foto is not None:
                 st.markdown(f"<div style='text-align:center; padding:15px; background:#111; color:#D4AF37; border-radius:15px; font-size:28px; font-weight:bold; margin-bottom:20px;'>TOTAL TERPERIKSA: {len(counts)} BUAH</div>", unsafe_allow_html=True)
                 st.table(rekap) 
             else:
-                st.warning("Tomat tidak terbaca. Perbaiki posisi pengambilan gambar atau perhatikan pencahayaan sekitar objek.")
+                st.warning("Tomat tidak terbaca.")
 
 # tindakan
 st.markdown("---")
@@ -167,13 +167,13 @@ with c1:
 with c2:
     st.markdown("""<div class="guide-item" style="border-color: #FFA500;">
         <b style="color: #FFA500; font-size: 26px;">KERUSAKAN SEDANG</b><br>
-        <span style="font-size: 18px;">Segera pisahkan jika kerusakan mulai bertambah agar tidak menular.</span>
+        <span style="font-size: 18px;">Segera pisahkan jika kerusakan mulai bertambah parah agar tidak menular.</span>
     </div>""", unsafe_allow_html=True)
 
 with c3:
     st.markdown("""<div class="guide-item" style="border-color: #B22222;">
         <b style="color: #B22222; font-size: 26px;">KERUSAKAN BERAT</b><br>
-        <span style="font-size: 18px;">Rusak Parah. Pisahkan segera dari stok buah yang sehat.</span>
+        <span style="font-size: 18px;">Rusak Parah. Pisahkan segera dari stok buah.</span>
     </div>""", unsafe_allow_html=True)
 
 st.markdown("<br><p style='text-align: center; color: #BBB; font-size: 14px; letter-spacing: 3px;'>SKRIPSI 2026</p>", unsafe_allow_html=True)
