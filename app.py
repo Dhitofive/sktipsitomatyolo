@@ -4,14 +4,14 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-# --- KONFIGURASI HALAMAN ---
-st.set_page_config(page_title="Wonderful Tomato Sorting", layout="wide")
+# halaman
+st.set_page_config(page_title="kerusakan tomat", layout="wide")
 
-# --- PARAMETER DETEKSI (DITETAPKAN LANGSUNG / DISEMBUNYIKAN DARI USER) ---
-CONF_LIMIT = 0.50  # Tingkat Keyakinan Default
-IOU_LIMIT = 0.45   # Ambang Batas Tumpang Tindih Default
+# parameter
+CONF_LIMIT = 0.50  
+IOU_LIMIT = 0.45  
 
-# --- CUSTOM CSS (WONDERFUL INDONESIA - ELDERLY FRIENDLY) ---
+# custom css
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700&family=Inter:wght=400;600&display=swap');
@@ -76,7 +76,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- FUNGSI LOAD MODEL ---
+# model
 @st.cache_resource
 def load_model():
     return YOLO('best22.pt')
@@ -86,7 +86,7 @@ try:
 except:
     st.error("Model 'best22.pt' tidak ditemukan.")
 
-# --- HERO SECTION ---
+# tampilan awal
 st.markdown("""
     <div class="hero-section">
         <p style="letter-spacing: 4px; color: #D4AF37; margin-bottom: 10px; font-weight: bold;">TOKO IWAN</p>
@@ -98,7 +98,7 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# --- AREA INPUT ---
+# input
 st.markdown("### Ambil Foto Tomat")
 metode = st.radio("Pilih Cara:", ("Galeri Foto HP", "Kamera Langsung"), horizontal=True)
 
@@ -108,7 +108,7 @@ if metode == "Galeri Foto HP":
 else:
     foto = st.camera_input("Scanner AI")
 
-# --- PROSES DETEKSI ---
+# klasifikasi
 if foto is not None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("MULAI PERIKSA"):
@@ -116,7 +116,7 @@ if foto is not None:
             gambar = Image.open(foto)
             img_array = np.array(gambar)
             
-            # Prediksi langsung menggunakan variabel konstan tanpa input user
+            # mvrvl
             results = model.predict(source=img_array, conf=CONF_LIMIT, iou=IOU_LIMIT)
             
             st.markdown("---")
@@ -128,14 +128,14 @@ if foto is not None:
                 res_plotted = results[0].plot(conf=False)
                 st.image(res_plotted, caption="Hasil Identifikasi AI", use_container_width=True)
                 
-                # --- DISKLAIMER BATASAN MASALAH ---
+                # catatan
                 st.markdown("""
                     <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
                         *Catatan: Model YOLOv8 hanya mengklasifikasi tingkat kerusakan berdasarkan fitur visual yang tampak pada permukaan kulit buah yang tertangkap jelas oleh kamera.
                     </p>
                 """, unsafe_allow_html=True)
 
-            # --- BAGIAN STATISTIK ---
+            # rincian
             st.markdown("---")
             st.markdown("### Rincian Kerusakan")
             
@@ -153,7 +153,7 @@ if foto is not None:
             else:
                 st.warning("Tomat tidak terbaca. Perbaiki posisi pengambilan gambar atau perhatikan pencahayaan sekitar objek.")
 
-# --- PANDUAN TINDAKAN ---
+# tindakan
 st.markdown("---")
 st.markdown("### Saran Tindakan")
 c1, c2, c3 = st.columns(3)
