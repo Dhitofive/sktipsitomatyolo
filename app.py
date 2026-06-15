@@ -131,7 +131,7 @@ if foto is not None:
                 # catatan
                 st.markdown("""
                     <p style='font-size: 15px; color: #666666; font-style: italic; margin-top: 5px; line-height: 1.3;'>
-                        *Catatan: sistem hanya memprediksi tomat yang terlihat langsung oleh kamera
+                        *Catatan: sistem hanya memprediksi kerusakan tomat yang terlihat langsung oleh kamera
                     </p>
                 """, unsafe_allow_html=True)
 
