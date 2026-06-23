@@ -79,7 +79,7 @@ st.markdown("""
 # model
 @st.cache_resource
 def load_model():
-    return YOLO('best5.pt')
+    return YOLO('best6.pt')
 
 try:
     model = load_model()
