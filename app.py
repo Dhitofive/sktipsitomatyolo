@@ -79,12 +79,12 @@ st.markdown("""
 # model
 @st.cache_resource
 def load_model():
-    return YOLO('best3.pt')
+    return YOLO('best4.pt')
 
 try:
     model = load_model()
 except:
-    st.error("Model 'best22.pt' tidak ditemukan.")
+    st.error("Model tidak ditemukan.")
 
 # tampilan awal
 st.markdown("""
